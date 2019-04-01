@@ -9,7 +9,7 @@ dark green 27	60	6
 */
 
 /* the main pattren 
-dark green  34	56	10	 
+dark green  34,56,10	 
 light green 77,107,17
 yellow 248	214	48	
 grass 178,178,79	
@@ -97,7 +97,7 @@ main {
 	font-weight: 400;
     line-height: 2;
     order: 1; */
-padding-top: 20em;
+    padding-top: 20em;
 	margin-bottom: 4em;
     position: relative;
     display: flex;
@@ -108,9 +108,18 @@ padding-top: 20em;
 .card-img{
     /* height: 20em ; */
 }
-.card{
-    flex: 1 0 21%; /* explanation below */
-    max-width: 250px ;
-    min-width: 200px ;
+/* card */
+.plant_card{
+	flex: 1 0 19%; /* explanation below */
+	margin: 5px;
+
+    /* max-width: 220px ; */
+    /* min-width: 200px ; */
     margin: 0.5em;
+}
+.card-butt{
+    background-color: rgb(34,56,10);
+    margin-top: 1rem;
+
+
 }

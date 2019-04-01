@@ -1,26 +1,25 @@
 import React, { Component } from 'react';
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { Card, CardImg, CardText, CardBody,
-  CardTitle, CardSubtitle, Button } from 'reactstrap';
-  import './plants.css';
+import './plants.css';
+import Plant from './Plant'
 
 const axios = require('axios');
+//API Authentcation 
+const token='R1ZuUENNOXBnR0RrQkpjSHAxenM5Zz09';
 
-//https://trefle.io/some-url?token=R1ZuUENNOXBnR0RrQkpjSHAxenM5Zz09
 class App extends Component {
   constructor(props) {
     super();
     this.state = {
-      plants: [],
-      my_plants: [],
+      plants: [],//save the current 30 plant 
+      my_plants: [],//save plants ids'
       current: {}
-
     }
   }
 
   // 
-  
+
   handleAddToggle = (plant) => {
     // film:{}
     console.log(plant);
@@ -58,110 +57,46 @@ class App extends Component {
 
   }
   //get all plants and send it to plan card
-componentDidMount() {
+  componentDidMount() {
 
-var url = "https://api.nasa.gov/planetary/apod?api_key=NNKOjkoul8n1CH18TWA9gwngW1s1SmjESPjNoUFo";
+    // var url = "https://trefle.io/api/plants?q=strawberry&token=R1ZuUENNOXBnR0RrQkpjSHAxenM5Zz09";
+    //"http://trefle.io/api/plants/129137"
+    //q=rosemary
     axios({
-      url: 'https://trefle.io/api/plants?q=strawberry&token=R1ZuUENNOXBnR0RrQkpjSHAxenM5Zz09',
-    })
-    .then(data => {
-      console.log(data)
-       return data.data
-    })
-    .then(respo => {
+      url: 'https://trefle.io/api/plants?token=R1ZuUENNOXBnR0RrQkpjSHAxenM5Zz09',
+    }).then(respo => {
         console.log(respo) // take a look at what you get back!
-        // this.setState({current: response})
+        this.setState({
+          plants: respo.data
+        }).catch(e=>{
+
+        })
       })
-  }
+    }
 
   render() {
-
+    var plants_list = this.state.plants.map((plant) => {
+      return <Plant name={plant.common_name} id={plant.id} sci_name={plant.scientific_name} />
+    })
     return (
       <div className="App">
-<header className="page-header">
-  <a href="#default" className="logo">Cactus</a> 
-  <div className="header-right">
+        <header className="page-header">
+          <a href="#default" className="logo">Cactus</a>
 
-  {/* <a>my plants</a> */}
+          <div className="header-right">
+            <a className="active" href="#home">my plants</a>
+            <a href="#contact">Contact</a>
+            <a href="#about">About</a>
+          </div>
+          
+        </header>
 
-    <a className="active" href="#home">my plants</a>
-    <a href="#contact">Contact</a>
-    <a href="#about">About</a>
-    </div>
+        <div className="contant">
+          {plants_list}
+        </div>
+        <footer>
 
-</header>
-<div className="contant">
-<Card className='card' color=''>
-        <CardImg className="card-img" top width="100%" src="https://i0.wp.com/www.healthline.com/hlcmsresource/images/topic_centers/1047-The_Best_Air-Purifying_Plants_For_Your_Home-1296x728-Spider_Plant.jpg?w=1155&h=1528" alt="Card image cap" />
-        <CardBody>
-          <CardTitle>Card title</CardTitle>
-          <CardSubtitle>Card subtitle</CardSubtitle>
-          <CardText>Some quick example text to build on the card title and make up the bulk of the card's content.</CardText>
-          <Button>Button</Button>
-        </CardBody>
-      </Card>
-      <Card color=''>
-        <CardImg className="card-img" top width="100%" src="https://i0.wp.com/www.healthline.com/hlcmsresource/images/topic_centers/1047-The_Best_Air-Purifying_Plants_For_Your_Home-1296x728-Spider_Plant.jpg?w=1155&h=1528" alt="Card image cap" />
-        <CardBody>
-          <CardTitle>Card title</CardTitle>
-          <CardSubtitle>Card subtitle</CardSubtitle>
-          <CardText>Some quick example text to build on the card title and make up the bulk of the card's content.</CardText>
-          <Button>Button</Button>
-        </CardBody>
-      </Card>
-      <Card color=''>
-        <CardImg className="card-img" top width="100%" src="https://i0.wp.com/www.healthline.com/hlcmsresource/images/topic_centers/1047-The_Best_Air-Purifying_Plants_For_Your_Home-1296x728-Spider_Plant.jpg?w=1155&h=1528" alt="Card image cap" />
-        <CardBody>
-          <CardTitle>Card title</CardTitle>
-          <CardSubtitle>Card subtitle</CardSubtitle>
-          <CardText>Some quick example text to build on the card title and make up the bulk of the card's content.</CardText>
-          <Button>Button</Button>
-        </CardBody>
-      </Card>
-      <Card color=''>
-        <CardImg className="card-img" top width="100%" src="https://i0.wp.com/www.healthline.com/hlcmsresource/images/topic_centers/1047-The_Best_Air-Purifying_Plants_For_Your_Home-1296x728-Spider_Plant.jpg?w=1155&h=1528" alt="Card image cap" />
-        <CardBody>
-          <CardTitle>Card title</CardTitle>
-          <CardSubtitle>Card subtitle</CardSubtitle>
-          <CardText>Some quick example text to build on the card title and make up the bulk of the card's content.</CardText>
-          <Button>Button</Button>
-        </CardBody>
-      </Card>
-      <Card color=''>
-        <CardImg className="card-img" top width="100%" src="https://i0.wp.com/www.healthline.com/hlcmsresource/images/topic_centers/1047-The_Best_Air-Purifying_Plants_For_Your_Home-1296x728-Spider_Plant.jpg?w=1155&h=1528" alt="Card image cap" />
-        <CardBody>
-          <CardTitle>Card title</CardTitle>
-          <CardSubtitle>Card subtitle</CardSubtitle>
-          <CardText>Some quick example text to build on the card title and make up the bulk of the card's content.</CardText>
-          <Button>Button</Button>
-        </CardBody>
-      </Card>
-      <Card color=''>
-        <CardImg className="card-img" top width="100%" src="https://i0.wp.com/www.healthline.com/hlcmsresource/images/topic_centers/1047-The_Best_Air-Purifying_Plants_For_Your_Home-1296x728-Spider_Plant.jpg?w=1155&h=1528" alt="Card image cap" />
-        <CardBody>
-          <CardTitle>Card title</CardTitle>
-          <CardSubtitle>Card subtitle</CardSubtitle>
-          <CardText>Some quick example text to build on the card title and make up the bulk of the card's content.</CardText>
-          <Button>Button</Button>
-        </CardBody>
-      </Card>
-      <Card color=''>
-        <CardImg className="card-img" top width="100%" src="https://i0.wp.com/www.healthline.com/hlcmsresource/images/topic_centers/1047-The_Best_Air-Purifying_Plants_For_Your_Home-1296x728-Spider_Plant.jpg?w=1155&h=1528" alt="Card image cap" />
-        <CardBody>
-          <CardTitle>Card title</CardTitle>
-          <CardSubtitle>Card subtitle</CardSubtitle>
-          <CardText>Some quick example text to build on the card title and make up the bulk of the card's content.</CardText>
-          <Button>Button</Button>
-        </CardBody>
-      </Card>
-    {/* <Button color="danger">Danger!</Button>
-    <Card body inverse color="success">
-    <CardTitle>Special Title Treatment</CardTitle>
-    <CardText>With supporting text below as a natural lead-in to additional content.</CardText>
-    <Button color="secondary">Button</Button>
-  </Card> */}
-  </div>        
-
+        </footer>
       </div>
     );
   }

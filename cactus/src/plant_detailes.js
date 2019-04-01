@@ -1,5 +1,9 @@
 import React, { Component } from 'react';
 import './plants.css';
+import {
+  Card, CardImg, CardText, CardBody,
+  CardTitle, CardSubtitle, Button
+} from 'reactstrap';
 
 class plant_details extends Component {
   render() {
