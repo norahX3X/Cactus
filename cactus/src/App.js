@@ -3,7 +3,10 @@ import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './plants.css';
 import Plant from './Plant'
-
+import PlantsDB from './plantDB'
+import {
+  Card, CardImg, CardText, CardBody,
+  CardTitle, CardSubtitle, Button,Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 const axios = require('axios');
 //API Authentcation 
 const token='R1ZuUENNOXBnR0RrQkpjSHAxenM5Zz09';
@@ -16,8 +19,20 @@ class App extends Component {
       my_plants: [],//save plants ids'
       current: {}
     }
+    // this.toggle = this.toggle.bind(this);
+
   }
 
+
+  // toggle= ()=> {
+  //  // e.default()
+  //   // console.log(e.target);
+    
+  //   this.setState(prevState => ({
+  //     modal: !prevState.modal
+  //   }));
+  //   console.log('aaaclicked!!')
+  // }
   // 
 
   handleAddToggle = (plant) => {
@@ -57,43 +72,62 @@ class App extends Component {
 
   }
   //get all plants and send it to plan card
-  componentDidMount() {
-
+  componentDidMount(){
+  //start= () => {
     // var url = "https://trefle.io/api/plants?q=strawberry&token=R1ZuUENNOXBnR0RrQkpjSHAxenM5Zz09";
     //"http://trefle.io/api/plants/129137"
     //q=rosemary
-    axios({
-      url: 'https://trefle.io/api/plants?token=R1ZuUENNOXBnR0RrQkpjSHAxenM5Zz09',
+    axios({//page=3&
+      url: 'https://trefle.io/api/plants/?page=9&token=R1ZuUENNOXBnR0RrQkpjSHAxenM5Zz09',
     }).then(respo => {
         console.log(respo) // take a look at what you get back!
         this.setState({
           plants: respo.data
-        }).catch(e=>{
-
         })
       })
-    }
+        .catch(e=>{
+          console.log("slove it from database")
+          this.setState({
+            plants: PlantsDB.plants
+          })
+      })
+  }
 
   render() {
+
     var plants_list = this.state.plants.map((plant) => {
-      return <Plant name={plant.common_name} id={plant.id} sci_name={plant.scientific_name} />
+      return <Plant name={plant.common_name} id={plant.id} sci_name={plant.scientific_name} key={plant.id} />
     })
+
+    
     return (
       <div className="App">
+           
         <header className="page-header">
           <a href="#default" className="logo">Cactus</a>
-
           <div className="header-right">
             <a className="active" href="#home">my plants</a>
             <a href="#contact">Contact</a>
             <a href="#about">About</a>
           </div>
-          
+         
         </header>
 
         <div className="contant">
+        <div className='fillter_header'>
+        <div class="paging-module__page-numbers text-right">
+          <a href="#" class="paging-module__previous">&laquo;</a>
+          <button type="submit" class="btn btn-default paging-module__btn">1</button>
+          <button type="submit" class="btn btn-default paging-module__btn">2</button>
+          <button type="submit" class="btn btn-default btn-primary paging-module__btn">3</button>
+          <a href="#" class="paging-module__next">&raquo;</a>
+        </div>
+        
+         </div>
           {plants_list}
         </div>
+   
+  
         <footer>
 
         </footer>

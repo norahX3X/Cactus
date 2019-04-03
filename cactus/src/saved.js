@@ -11,3 +11,9 @@ class saved extends Component {
 }
 
 export default saved;
+
+
+/*
+max-width: 220px ; */
+    /* min-width: 200px ;
+*/
