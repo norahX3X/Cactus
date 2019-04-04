@@ -4,6 +4,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import './plants.css';
 import Plant from './Plant'
 import PlantsDB from './plantDB'
+import { Pagination, PaginationItem, PaginationLink } from 'reactstrap';
 import {
   Card, CardImg, CardText, CardBody,
   CardTitle, CardSubtitle, Button,Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
@@ -17,23 +18,13 @@ class App extends Component {
     this.state = {
       plants: [],//save the current 30 plant 
       my_plants: [],//save plants ids'
-      current: {}
+      current: {},
+      page_num:1
     }
     // this.toggle = this.toggle.bind(this);
 
   }
 
-
-  // toggle= ()=> {
-  //  // e.default()
-  //   // console.log(e.target);
-    
-  //   this.setState(prevState => ({
-  //     modal: !prevState.modal
-  //   }));
-  //   console.log('aaaclicked!!')
-  // }
-  // 
 
   handleAddToggle = (plant) => {
     // film:{}
@@ -52,33 +43,22 @@ class App extends Component {
 
     this.setState({ my_plants })
   }
-
-  handleDetailsClick = (plant) => {
-    this.setState({ current: plant })
-
-
-    const url = `https://api.themoviedb.org/3/movie/${plant.id}?api_key=58d1cc1884566fbdab699fa30a455802&append_to_response=videos,images&language=en`
-
-    fetch(url).then(response => {
-      response.json().then(data => {
-        console.log(data) // take a look at what you get back!
-        this.setState({ current: data })
-      })
-    })
-
-
-    console.log("Fetching details for" + plant.title);
-    console.log(this.state.current);
+  changePage =(page_num)=>{
+console.log(page_num)
+this.setState({
+page_num:page_num
+})
+this.start()
 
   }
   //get all plants and send it to plan card
-  componentDidMount(){
-  //start= () => {
+  // componentDidMount(){
+  start= () => {
     // var url = "https://trefle.io/api/plants?q=strawberry&token=R1ZuUENNOXBnR0RrQkpjSHAxenM5Zz09";
     //"http://trefle.io/api/plants/129137"
     //q=rosemary
     axios({//page=3&
-      url: 'https://trefle.io/api/plants/?page=9&token=R1ZuUENNOXBnR0RrQkpjSHAxenM5Zz09',
+      url: `https://trefle.io/api/plants/?page=${this.state.page_num}&token=R1ZuUENNOXBnR0RrQkpjSHAxenM5Zz09`,
     }).then(respo => {
         console.log(respo) // take a look at what you get back!
         this.setState({
@@ -94,7 +74,7 @@ class App extends Component {
   }
 
   render() {
-
+    this.start()
     var plants_list = this.state.plants.map((plant) => {
       return <Plant name={plant.common_name} id={plant.id} sci_name={plant.scientific_name} key={plant.id} />
     })
@@ -115,14 +95,40 @@ class App extends Component {
 
         <div className="contant">
         <div className='fillter_header'>
-        <div class="paging-module__page-numbers text-right">
-          <a href="#" class="paging-module__previous">&laquo;</a>
-          <button type="submit" class="btn btn-default paging-module__btn">1</button>
-          <button type="submit" class="btn btn-default paging-module__btn">2</button>
-          <button type="submit" class="btn btn-default btn-primary paging-module__btn">3</button>
-          <a href="#" class="paging-module__next">&raquo;</a>
-        </div>
-        
+        <Pagination aria-label="Page navigation example">
+        <PaginationItem>
+          <PaginationLink previous href="#" />
+        </PaginationItem>
+        <PaginationItem>
+          <PaginationLink onClick={()=>{this.changePage(1)}} href="#">
+            1
+          </PaginationLink>
+        </PaginationItem>
+        <PaginationItem>
+          <PaginationLink onClick={()=>{this.changePage(2)}} href="#">
+            2
+          </PaginationLink>
+        </PaginationItem>
+        <PaginationItem>
+          <PaginationLink onClick={()=>{this.changePage(3)}} href="#">
+            3
+          </PaginationLink>
+        </PaginationItem>
+        <PaginationItem>
+          <PaginationLink onClick={()=>{this.changePage(4)}} href="#">
+            4
+          </PaginationLink>
+        </PaginationItem>
+        <PaginationItem>
+          <PaginationLink  onClick={()=>{this.changePage(5)}} href="#">
+            5
+          </PaginationLink>
+        </PaginationItem>
+        <PaginationItem>
+          <PaginationLink next href="#" />
+        </PaginationItem>
+    
+      </Pagination>
          </div>
           {plants_list}
         </div>

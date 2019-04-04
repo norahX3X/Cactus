@@ -28,7 +28,8 @@ class Plant extends Component {
         modal: false,
         moreInfo:'https://plants.sc.egov.usda.gov/java/',
         temp: '24 - 32',
-        shade:'',
+        shade:'shadow',
+        growth_rate:'rabide'
       }
       this.handleDetailsClick = this.handleDetailsClick.bind(this)
 
@@ -44,18 +45,17 @@ class Plant extends Component {
 
     }
 
-    // componentDidMount() {
-    start= () => {
+    componentDidMount() {
+    // start= () => {
       axios({
         url: `https://trefle.io/api/plants/${this.props.id}?token=R1ZuUENNOXBnR0RrQkpjSHAxenM5Zz09`,
       }).then(respo => {
-          console.log(respo.data) // take a look at what you get back!
+          // console.log(respo.data) // take a look at what you get back!
           if(respo.data.images.length > 0){
           this.setState({
             image: respo.data.images[0].url//+index number of araay !! .main_species 
           })
         }
-
         //main_species.specifications.growth_period
         console.log(respo.data.main_species.specifications.growth_period)
         if(respo.data.main_species.specifications.growth_period!= null){
@@ -68,7 +68,7 @@ class Plant extends Component {
             type: respo.data.family_common_name
           })
         }
-        if(respo.data.main_species.growth != null){
+        if(respo.data.main_species.growth.temperature_minimum.deg_c !== null){
           this.setState({
             temp: Math.floor(respo.data.main_species.growth.temperature_minimum.deg_c)
           })
@@ -79,7 +79,8 @@ class Plant extends Component {
           })
         }  
         this.setState({
-          moreInfo: respo.data.main_species.sources[0].source_url
+          moreInfo: respo.data.main_species.sources[0].source_url,
+          growth_rate:respo.data.main_species.specifications.growth_rate
         })
     }).catch(e=>{
 
@@ -108,10 +109,14 @@ class Plant extends Component {
           <CardImg className="card-img" top width="50%" src= {this.state.image} alt="Card image cap" /><br/>
 
             <span className="bold" >Scintfic Name: </span> {this.state.sci_name} <br/>
-            <span className="bold" >temp: </span> {this.state.temp} &deg;C <br/>
+            <span className="bold" >Seassons: </span> {this.state.seassons} <br/>
 
-
-
+            <span className="title" >Caring Instruction: </span> 
+            <ul>
+           <li> You have to keep it in enviroment where the temprecture betwen: {this.state.temp} &deg;C.  </li>
+           <li> You can noticing the growth of this plant is  {this.state.growth_rate}. </li>
+           <li> You have to keep it in  {this.state.shade} shade.</li>
+            </ul>
           </ModalBody>
           <ModalFooter>
             <Button color="primary" onClick={ () => this.moreInfo(this.state.moreInfo)}>more info</Button>{' '}
